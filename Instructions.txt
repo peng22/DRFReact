@@ -1,0 +1,9 @@
+To use docker compose to create docker container for the frontend & backend:
+
+    1- Create Dockerfile for the backend
+    2- Create Dockerfile for the frontend
+    3- Use docker-compose to connect them.
+    4- to convert requests from the backend to front in the package.json in the
+       frontend directory add
+       "proxy":  "http://server:8000",
+       and add server in the ALLOWED_HOSTS in django settings.

@@ -1,0 +1,23 @@
+version: '3'
+services:
+    server:
+      build: .
+      command: python manage.py runserver 0.0.0.0:8000
+      volumes:
+        - ./backend:/code
+      ports:
+        - "8881:8000"
+    front:
+      build: ./frontend
+      depends_on:
+         - server
+      # Mount the container `/drf` folder to the a `src` folder in the location
+      # of the Dockerfile on the host machine.
+      volumes:
+         - ./frontend:/usr/src/app/
+      restart: always
+      stdin_open: true
+      # Map port 3000 to port 8081 so that we can access the application on
+      # our host machine by visiting 127.0.0.1:8081
+      ports:
+         - "8081:3000"
