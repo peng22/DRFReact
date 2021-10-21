@@ -2,11 +2,34 @@ version: '3'
 services:
     server:
       build: .
-      command: python manage.py runserver 0.0.0.0:8000
+      command:
+         python3 manage.py runserver 0.0.0.0:8000
+      depends_on:
+        - db
+      #useful in development to track the changes
       volumes:
         - ./backend:/code
       ports:
         - "8881:8000"
+      env_file:
+        - .env
+      networks:
+        - server_network
+    db:
+      image: postgis/postgis
+      container_name: db
+      ports:
+        - "5438:5432"
+      environment:
+        - POSTGRES_DB=${DB_NAME}
+        - POSTGRES_USER=${POSTGRES_USER}
+        - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+        - ALLOW_IP_RANGE=0.0.0.0
+      volumes:
+        - postgres_data:/var/lib/postgresql
+      networks:
+        - server_network
+    #
     front:
       build: ./frontend
       depends_on:
@@ -21,3 +44,11 @@ services:
       # our host machine by visiting 127.0.0.1:8081
       ports:
          - "8081:3000"
+      networks:
+        - server_network         
+networks:
+  server_network:
+    driver: bridge
+
+volumes:
+  postgres_data:

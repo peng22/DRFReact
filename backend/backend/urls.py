@@ -20,5 +20,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('',include('todo.urls')),
     path('accounts/',include('accounts.urls')),
-    path('notes/', include('notes.urls'))
+    path('notes/', include('notes.urls')),
+    path('construction/',include('construction.urls'))
+    
 ]
